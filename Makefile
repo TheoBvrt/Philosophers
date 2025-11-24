@@ -1,7 +1,9 @@
 NAME = philo
 
 SRCS =	./srcs/main.c \
-		./srcs/init.c
+		./srcs/init.c \
+		./srcs/exit.c \
+		./srcs/philo.c
 
 OBJS = ${SRCS:.c=.o}
 CC = gcc

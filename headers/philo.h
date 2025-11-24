@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:56:51 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/24 17:34:15 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/24 18:09:28 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,7 @@ typedef struct s_data
 }	t_data;
 
 int	init_philosophers(char *argv[], int argc, t_data *data);
+void	clean_philosophers(t_data *data);
+void	*routine(void *data);
 
 #endif
