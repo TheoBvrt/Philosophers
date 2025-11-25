@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 16:03:23 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/25 14:59:41 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/25 23:13:34 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static long	parse_number(char *str)
 {
 	int		index;
-	
+
 	index = 0;
 	while (str[index])
 	{
@@ -70,6 +70,7 @@ void	launch_threads(t_data *data)
 	index = 0;
 	while (index < data->nb_of_philos)
 	{
+		data->philosophers[index].last_meat = get_time_in_ms() - data->start_time;
 		pthread_create(&data->threads[index], NULL, routine,
 			&data->philosophers[index]);
 		index ++;
