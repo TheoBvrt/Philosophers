@@ -1,24 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 18:08:52 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/25 13:49:59 by thbouver         ###   ########.fr       */
+/*   Created: 2025/11/25 13:03:31 by thbouver          #+#    #+#             */
+/*   Updated: 2025/11/25 13:47:34 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*routine(void *data)
+void	*monitoring(void *d)
 {
-	t_philosopher	*philo;
+	int	counter = 0;
+	t_data	*data;
+	int		index;
 
-	philo = (t_philosopher *)data;
-	while (philo->data->exit == 0)
+	data = (t_data *)d;
+	index = 0;
+	while (data->exit == 0)
 	{
-		printf("[%d] -> ping\n", philo->id);
+		ft_printf("test");
+		index = 0;
+		while (index < data->nb_of_philos)
+		{
+			index ++;
+		}
+		if (counter == 3)
+			data->exit = 1;
+		counter ++;
+		sleep(2);
 	}
 }

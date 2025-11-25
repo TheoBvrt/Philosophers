@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:56:51 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/24 18:09:28 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/25 13:35:00 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "unistd.h"
 # include "pthread.h"
 # include "limits.h"
+ #include <sys/time.h>
 
 typedef struct s_data t_data;
 
@@ -32,7 +33,9 @@ typedef struct s_data
 {
 	pthread_mutex_t	*forks;
 	pthread_t		*threads;
+	pthread_t		monitor;
 	t_philosopher	*philosophers;
+	int				exit;
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
@@ -42,6 +45,7 @@ typedef struct s_data
 
 int	init_philosophers(char *argv[], int argc, t_data *data);
 void	clean_philosophers(t_data *data);
-void	*routine(void *data);
+void	*routine(void *d);
+void	*monitoring(void *d);
 
 #endif

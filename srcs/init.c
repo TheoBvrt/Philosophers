@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 16:03:23 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/24 18:13:29 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/25 13:49:26 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,32 @@ static int	parse_args(char *argv[], int argc, t_data *data)
 	return (1);
 }
 
-int	init_philosophers(char *argv[], int argc, t_data *data)
+static int	setup_each_philo(t_data *data)
 {
 	int	index;
 
 	index = 0;
+	while (index < data->nb_of_philos)
+	{
+		data->philosophers[index].data = data;
+		data->philosophers[index].id = index + 1;
+		data->philosophers[index].last_meat = 0;
+		pthread_mutex_init(&data->forks[index], NULL);
+		pthread_create(&data->threads[index], NULL, routine,
+				&data->philosophers[index]);
+		index ++;
+	}
+	index = 0;
+	pthread_create(&data->monitor, NULL, monitoring, data);
+	pthread_join(data->monitor, NULL);
+	while (index < data->nb_of_philos)
+		pthread_join(data->threads[index ++], NULL);
+	return (1);
+}
+
+int	init_philosophers(char *argv[], int argc, t_data *data)
+{
+	data->exit = 0;
 	if (!parse_args(argv, argc, data))
 		return (0);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_of_philos);
@@ -63,17 +84,8 @@ int	init_philosophers(char *argv[], int argc, t_data *data)
 	data->philosophers = malloc(sizeof(t_philosopher) * data->nb_of_philos);
 	if (!data->philosophers)
 		return (free(data->forks), free(data->threads), 0);
-	while (index < data->nb_of_philos)
-	{
-		data->philosophers[index].data = data;
-		data->philosophers[index].id = index + 1;
-		data->philosophers[index].last_meat = 0;
-		pthread_mutex_init(&data->forks[index], NULL);
-		pthread_create(&data->threads[index], NULL, routine, &data->philosophers[index]);
-		index ++;
-	}
-	index = 0;
-	while (index < data->nb_of_philos)
-		pthread_join(data->threads[index ++], NULL);
+	if (!setup_each_philo(data))
+		return (free(data->forks), free(data->threads),
+			free(data->philosophers), 0);
 	return (1);
 }
