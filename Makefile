@@ -5,6 +5,7 @@ SRCS =	./srcs/main.c \
 		./srcs/exit.c \
 		./srcs/philo.c \
 		./srcs/monitoring.c \
+		./srcs/time.c \
 
 OBJS = ${SRCS:.c=.o}
 CC = gcc

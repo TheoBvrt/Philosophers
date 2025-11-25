@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 16:03:23 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/25 13:58:47 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/25 14:58:12 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,20 @@ static int	setup_each_philo(t_data *data)
 		data->philosophers[index].id = index + 1;
 		data->philosophers[index].last_meat = 0;
 		pthread_mutex_init(&data->forks[index], NULL);
+		index ++;
+	}
+	return (1);
+}
+
+void	launch_threads(t_data *data)
+{
+	int	index;
+
+	index = 0;
+	while (index < data->nb_of_philos)
+	{
 		pthread_create(&data->threads[index], NULL, routine,
-				&data->philosophers[index]);
+			&data->philosophers[index]);
 		index ++;
 	}
 	index = 0;
@@ -73,6 +85,7 @@ static int	setup_each_philo(t_data *data)
 int	init_philosophers(char *argv[], int argc, t_data *data)
 {
 	data->exit = 0;
+	data->start_time = get_time_in_ms();
 	if (!parse_args(argv, argc, data))
 		return (0);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_of_philos);

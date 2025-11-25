@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 11:05:10 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/25 14:57:22 by thbouver         ###   ########.fr       */
+/*   Created: 2025/11/25 14:24:34 by thbouver          #+#    #+#             */
+/*   Updated: 2025/11/25 14:44:36 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char *argv[])
+time_t	get_time_in_ms(void)
 {
-	t_data	data;
+	struct timeval	tv;
 
-	if (argc != 5 && argc != 6)
-	{
-		ft_printf("Usage : ./philo nb_of_philos t_to_die t_to_eat "
-			"t_to_sleep max_eat(optional)\n");
-		return (1);
-	}
-	if (!init_philosophers(argv, argc, &data))
-		return (1);
-	if (!launch_threads(&data))
-		return (1);
-	clean_philosophers(&data);
-	return (0);
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + (tv.tv_usec / 1000));
 }

@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:56:51 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/25 13:35:00 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/25 14:57:56 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "unistd.h"
 # include "pthread.h"
 # include "limits.h"
- #include <sys/time.h>
+# include <sys/time.h>
 
 typedef struct s_data t_data;
 
@@ -35,6 +35,7 @@ typedef struct s_data
 	pthread_t		*threads;
 	pthread_t		monitor;
 	t_philosopher	*philosophers;
+	time_t			start_time;
 	int				exit;
 	long			time_to_die;
 	long			time_to_eat;
@@ -44,8 +45,10 @@ typedef struct s_data
 }	t_data;
 
 int	init_philosophers(char *argv[], int argc, t_data *data);
+void	launch_threads(t_data *data);
 void	clean_philosophers(t_data *data);
 void	*routine(void *d);
 void	*monitoring(void *d);
+time_t	get_time_in_ms(void);
 
 #endif
