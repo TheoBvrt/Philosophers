@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 18:08:52 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/25 13:49:59 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/25 14:07:26 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	*routine(void *data)
 	philo = (t_philosopher *)data;
 	while (philo->data->exit == 0)
 	{
-		printf("[%d] -> ping\n", philo->id);
+		printf("[%d - %d] -> ping\n", philo->id, gettimeofday());
+		usleep(50000);
 	}
 }

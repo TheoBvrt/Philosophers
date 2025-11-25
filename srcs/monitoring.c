@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:03:31 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/25 13:47:34 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/25 14:03:40 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	*monitoring(void *d)
 	index = 0;
 	while (data->exit == 0)
 	{
-		ft_printf("test");
 		index = 0;
 		while (index < data->nb_of_philos)
 		{
@@ -33,4 +32,5 @@ void	*monitoring(void *d)
 		counter ++;
 		sleep(2);
 	}
+	printf("END\n");
 }
