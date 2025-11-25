@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:05:10 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/25 14:57:22 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/25 14:59:33 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ int	main(int argc, char *argv[])
 	}
 	if (!init_philosophers(argv, argc, &data))
 		return (1);
-	if (!launch_threads(&data))
-		return (1);
+	launch_threads(&data);
 	clean_philosophers(&data);
 	return (0);
 }

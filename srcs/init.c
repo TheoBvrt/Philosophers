@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 16:03:23 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/25 14:58:12 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/25 14:59:41 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	launch_threads(t_data *data)
 	pthread_join(data->monitor, NULL);
 	while (index < data->nb_of_philos)
 		pthread_join(data->threads[index ++], NULL);
-	return (1);
 }
 
 int	init_philosophers(char *argv[], int argc, t_data *data)
