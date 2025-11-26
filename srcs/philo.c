@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 18:08:52 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/26 00:15:30 by theo             ###   ########.fr       */
+/*   Updated: 2025/11/26 15:57:03 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,35 @@
 
 void	philo_print(t_philosopher *philo, char *msg)
 {
+	pthread_mutex_lock(&philo->data->print_mutex);
 	printf("(%ld)[%d] -> %s\n", get_time_in_ms() - philo->data->start_time,
 			philo->id, msg);
+	pthread_mutex_unlock(&philo->data->print_mutex);
 }
 
-int	smart_sleep(time_t ms, t_philosopher *philo)
+int	check_exit(t_philosopher *philo)
 {
-	long	index;
+	int	return_value;
 
-	index = 0;
-	while (index < ms)
+	return_value = 0;
+	pthread_mutex_lock(&philo->data->exit_mutex);
+	if (philo->data->exit == 1)
+		return_value = 1;
+	pthread_mutex_unlock(&philo->data->exit_mutex);
+	return(return_value);
+}
+
+void	smart_sleep(t_philosopher *philo, time_t ms)
+{
+	time_t	start;
+
+	start = get_time_in_ms();
+	while (!check_exit(philo))
 	{
-		if (philo->data->exit == 1)
-			return (0);
-		usleep(1000);
-		index ++;
+		if (get_time_in_ms() - start >= ms)
+			break ;
+		usleep(100);
 	}
-	return (1);
 }
 
 void	*routine(void *data)
@@ -38,17 +50,30 @@ void	*routine(void *data)
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)data;
-	while (philo->data->exit == 0)
+	while (!check_exit(philo))
 	{
 		philo_print(philo, "is thinking");
 		if (philo->id % 2 == 0)
 		{
 			pthread_mutex_lock(&philo->data->forks[philo->id % philo->data->nb_of_philos]);
 			pthread_mutex_lock(&philo->data->forks[(philo->id - 1) % philo->data->nb_of_philos]);
-			philo_print(philo, "is eating");
-			philo->last_meat = get_time_in_ms() - philo->data->start_time;
-			if (!smart_sleep(ms_to_microseconds(philo->data->time_to_eat), philo))
+			if (check_exit(philo))
+			{
+				pthread_mutex_unlock(&philo->data->forks[(philo->id - 1) % philo->data->nb_of_philos]);
+				pthread_mutex_unlock(&philo->data->forks[philo->id % philo->data->nb_of_philos]);
 				return (NULL);
+			}
+			philo_print(philo, "is eating");
+			
+			pthread_mutex_lock(&philo->data->meat_mutex);
+			philo->total_meat ++;
+			pthread_mutex_unlock(&philo->data->meat_mutex);
+
+			if (philo->total_meat == philo->data->max_eat)
+				philo_print(philo, "max eat");
+			philo->last_meat = get_time_in_ms() - philo->data->start_time;
+			smart_sleep(philo, philo->data->time_to_eat);
+
 			pthread_mutex_unlock(&philo->data->forks[(philo->id - 1) % philo->data->nb_of_philos]);
 			pthread_mutex_unlock(&philo->data->forks[philo->id % philo->data->nb_of_philos]);
 		}
@@ -56,17 +81,30 @@ void	*routine(void *data)
 		{
 			pthread_mutex_lock(&philo->data->forks[(philo->id - 1) % philo->data->nb_of_philos]);
 			pthread_mutex_lock(&philo->data->forks[philo->id % philo->data->nb_of_philos]);
-
-			philo_print(philo, "is eating");
-			philo->last_meat = get_time_in_ms() - philo->data->start_time;
-			if (!smart_sleep(ms_to_microseconds(philo->data->time_to_eat), philo))
+			if (check_exit(philo))
+			{
+				pthread_mutex_unlock(&philo->data->forks[philo->id % philo->data->nb_of_philos]);
+				pthread_mutex_unlock(&philo->data->forks[(philo->id - 1) % philo->data->nb_of_philos]);
 				return (NULL);
+			}
+			philo_print(philo, "is eating");
 
+			pthread_mutex_lock(&philo->data->meat_mutex);
+			philo->total_meat ++;
+			pthread_mutex_unlock(&philo->data->meat_mutex);
+
+			if (philo->total_meat == philo->data->max_eat)
+				philo_print(philo, "max eat");
+			philo->last_meat = get_time_in_ms() - philo->data->start_time;
+			smart_sleep(philo, philo->data->time_to_eat);
+	
 			pthread_mutex_unlock(&philo->data->forks[philo->id % philo->data->nb_of_philos]);
 			pthread_mutex_unlock(&philo->data->forks[(philo->id - 1) % philo->data->nb_of_philos]);
 		}
-		philo_print(philo, "is sleeping");
-		if (!smart_sleep(ms_to_microseconds(philo->data->time_to_sleep), philo))
+		if (check_exit(philo))
 			return (NULL);
+		philo_print(philo, "is sleeping");
+		smart_sleep(philo, philo->data->time_to_sleep);
 	}
 }
+

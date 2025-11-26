@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 16:03:23 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/25 23:13:34 by theo             ###   ########.fr       */
+/*   Updated: 2025/11/26 15:54:13 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,13 @@ static int	setup_each_philo(t_data *data)
 		data->philosophers[index].data = data;
 		data->philosophers[index].id = index + 1;
 		data->philosophers[index].last_meat = 0;
+		data->philosophers[index].total_meat = 0;
 		pthread_mutex_init(&data->forks[index], NULL);
 		index ++;
 	}
+	pthread_mutex_init(&data->exit_mutex, NULL);
+	pthread_mutex_init(&data->print_mutex, NULL);
+	pthread_mutex_init(&data->meat_mutex, NULL);
 	return (1);
 }
 
@@ -76,6 +80,7 @@ void	launch_threads(t_data *data)
 		index ++;
 	}
 	index = 0;
+	data->start = 1;
 	pthread_create(&data->monitor, NULL, monitoring, data);
 	pthread_join(data->monitor, NULL);
 	while (index < data->nb_of_philos)
@@ -85,6 +90,7 @@ void	launch_threads(t_data *data)
 int	init_philosophers(char *argv[], int argc, t_data *data)
 {
 	data->exit = 0;
+	data->start = 0;
 	data->start_time = get_time_in_ms();
 	if (!parse_args(argv, argc, data))
 		return (0);
