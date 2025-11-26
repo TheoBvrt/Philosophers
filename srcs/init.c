@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 16:03:23 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/26 15:54:13 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/26 16:10:00 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,12 @@ static int	setup_each_philo(t_data *data)
 		data->philosophers[index].id = index + 1;
 		data->philosophers[index].last_meat = 0;
 		data->philosophers[index].total_meat = 0;
+		pthread_mutex_init(&data->philosophers[index].meat_mutex, NULL);
 		pthread_mutex_init(&data->forks[index], NULL);
 		index ++;
 	}
 	pthread_mutex_init(&data->exit_mutex, NULL);
 	pthread_mutex_init(&data->print_mutex, NULL);
-	pthread_mutex_init(&data->meat_mutex, NULL);
 	return (1);
 }
 

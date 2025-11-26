@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:56:51 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/26 15:54:05 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/26 16:10:01 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_philosopher
 {
 	t_data	*data;
 	time_t	last_meat;
+	pthread_mutex_t	meat_mutex;
 	int		total_meat;
 	int		id;
 }	t_philosopher;
@@ -35,7 +36,6 @@ typedef struct s_data
 	pthread_mutex_t	*forks;
 	pthread_mutex_t exit_mutex;
 	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	meat_mutex;
 	pthread_t		*threads;
 	pthread_t		monitor;
 	t_philosopher	*philosophers;

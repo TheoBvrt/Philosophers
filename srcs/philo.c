@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 18:08:52 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/26 15:57:03 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/26 17:03:43 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,17 @@ void	*routine(void *data)
 			}
 			philo_print(philo, "is eating");
 			
-			pthread_mutex_lock(&philo->data->meat_mutex);
+			pthread_mutex_lock(&philo->meat_mutex);
 			philo->total_meat ++;
-			pthread_mutex_unlock(&philo->data->meat_mutex);
+			pthread_mutex_unlock(&philo->meat_mutex);
 
 			if (philo->total_meat == philo->data->max_eat)
 				philo_print(philo, "max eat");
+			
+			pthread_mutex_lock(&philo->meat_mutex);
 			philo->last_meat = get_time_in_ms() - philo->data->start_time;
+			pthread_mutex_unlock(&philo->meat_mutex);
+			
 			smart_sleep(philo, philo->data->time_to_eat);
 
 			pthread_mutex_unlock(&philo->data->forks[(philo->id - 1) % philo->data->nb_of_philos]);
@@ -89,13 +93,17 @@ void	*routine(void *data)
 			}
 			philo_print(philo, "is eating");
 
-			pthread_mutex_lock(&philo->data->meat_mutex);
+			pthread_mutex_lock(&philo->meat_mutex);
 			philo->total_meat ++;
-			pthread_mutex_unlock(&philo->data->meat_mutex);
+			pthread_mutex_unlock(&philo->meat_mutex);
 
 			if (philo->total_meat == philo->data->max_eat)
 				philo_print(philo, "max eat");
+
+			pthread_mutex_lock(&philo->meat_mutex);
 			philo->last_meat = get_time_in_ms() - philo->data->start_time;
+			pthread_mutex_unlock(&philo->meat_mutex);
+			
 			smart_sleep(philo, philo->data->time_to_eat);
 	
 			pthread_mutex_unlock(&philo->data->forks[philo->id % philo->data->nb_of_philos]);
