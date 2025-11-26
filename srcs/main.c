@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:05:10 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/25 23:23:12 by theo             ###   ########.fr       */
+/*   Updated: 2025/11/26 18:32:33 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	clean_philosophers(t_data *data)
+{
+	int	index;
+
+	index = 0;
+	while (index < data->nb_of_philos)
+	{
+		pthread_mutex_destroy(&data->philosophers[index].meat_mutex);
+		pthread_mutex_destroy(&data->forks[index ++]);
+	}
+	pthread_mutex_destroy(&data->exit_mutex);
+	pthread_mutex_destroy(&data->print_mutex);
+	free (data->forks);
+	free (data->philosophers);
+	free (data->threads);
+}
 
 int	main(int argc, char *argv[])
 {
