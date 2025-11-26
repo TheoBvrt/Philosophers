@@ -6,7 +6,7 @@
 /*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 16:03:23 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 00:19:36 by theo             ###   ########.fr       */
+/*   Updated: 2025/11/27 00:36:04 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ static int	parse_args(char *argv[], int argc, t_data *data)
 	data->time_to_eat = parse_number(argv[3]);
 	data->time_to_sleep = parse_number(argv[4]);
 	data->nb_of_philos = parse_number(argv[1]);
-	data->max_eat = -2;
+	data->minimum_eat = -2;
 	if (argc == 6)
-		data->max_eat = parse_number(argv[5]);
+		data->minimum_eat = parse_number(argv[5]);
 	if (data->time_to_die == -1 || data->nb_of_philos == 0
-		|| data->time_to_eat == -1 || data->max_eat== 0
+		|| data->time_to_eat == -1 || data->minimum_eat == 0
 		|| data->time_to_die == -1
 		|| data->nb_of_philos == -1
-		|| data->max_eat == -1)
+		|| data->minimum_eat == -1)
 	{
 		ft_printf("Erreur d'arguments\n");
 		return (0);
@@ -81,13 +81,18 @@ void	launch_threads(t_data *data)
 	int	index;
 
 	index = 0;
-	while (index < data->nb_of_philos)
+	if (data->nb_of_philos == 1)
+		single_philo(&data->philosophers[0]);
+	else
 	{
-		data->philosophers[index].last_meat = get_time_in_ms()
-			- data->start_time;
-		pthread_create(&data->threads[index], NULL, routine,
-			&data->philosophers[index]);
-		index ++;
+		while (index < data->nb_of_philos)
+		{
+			data->philosophers[index].last_meat = get_time_in_ms()
+				- data->start_time;
+			pthread_create(&data->threads[index], NULL, routine,
+				&data->philosophers[index]);
+			index ++;
+		}
 	}
 	index = 0;
 	data->start = 1;

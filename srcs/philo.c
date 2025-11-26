@@ -6,7 +6,7 @@
 /*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 18:08:52 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 00:06:35 by theo             ###   ########.fr       */
+/*   Updated: 2025/11/27 00:29:26 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	release_forks(t_philosopher *philo)
 	pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
 }
 
-static void	single_philo(t_philosopher	*philo)
+void	single_philo(t_philosopher	*philo)
 {
 	locked_print(philo, "is thinking");
 	pthread_mutex_lock(&philo->data->forks[0]);
@@ -45,13 +45,13 @@ void	*routine(void *data)
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)data;
-	if (philo->data->nb_of_philos == 1)
-		return (single_philo(philo), NULL);
 	while (!check_exit(philo))
 	{
 		locked_print(philo, "is thinking");
 		pthread_mutex_lock(&philo->data->forks[philo->right_fork]);
+		locked_print(philo, "has taken a fork");
 		pthread_mutex_lock(&philo->data->forks[philo->left_fork]);
+		locked_print(philo, "has taken a fork");
 		if (check_exit(philo))
 			return (release_forks(philo), NULL);
 		locked_print(philo, "is eating");

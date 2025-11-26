@@ -6,7 +6,7 @@
 /*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:03:31 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 00:12:56 by theo             ###   ########.fr       */
+/*   Updated: 2025/11/27 00:23:27 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	increment_max_eat(t_data *data, int index, int *max_eat_reached)
 {
 	pthread_mutex_lock(&data->philosophers[index].meat_mutex);
 	if (data->philosophers[index].total_meat
-		>= data->max_eat && data->max_eat != -2)
+		>= data->minimum_eat && data->minimum_eat != -2)
 		*max_eat_reached += 1;
 	pthread_mutex_unlock(&data->philosophers[index].meat_mutex);
 }
@@ -68,7 +68,7 @@ void	*monitoring(void *d)
 			increment_max_eat(data, index, &max_eat_reached);
 			index ++;
 		}
-		if (max_eat_reached >= data->nb_of_philos && data->max_eat != -2)
+		if (max_eat_reached >= data->nb_of_philos && data->minimum_eat != -2)
 		{
 			monitoring_print(data, "All philosophers have enough to eat");
 			set_exit(data);

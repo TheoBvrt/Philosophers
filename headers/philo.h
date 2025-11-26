@@ -6,7 +6,7 @@
 /*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:56:51 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 00:09:09 by theo             ###   ########.fr       */
+/*   Updated: 2025/11/27 00:29:32 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_data
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
 	time_t			nb_of_philos;
-	time_t			max_eat;
+	time_t			minimum_eat;
 	int				start;
 	int				exit;
 }	t_data;
@@ -59,6 +59,7 @@ void	*monitoring(void *d);
 void	locked_print(t_philosopher *philo, char *msg);
 void	monitoring_print(t_data *data, char *msg);
 void	smart_sleep(t_philosopher *philo, time_t ms);
+void	single_philo(t_philosopher	*philo);
 int		check_exit(t_philosopher *philo);
 int		init_philosophers(char *argv[], int argc, t_data *data);
 
