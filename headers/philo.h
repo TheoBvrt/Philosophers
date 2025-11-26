@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:56:51 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/26 18:18:48 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/27 00:09:09 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,23 @@
 # include "limits.h"
 # include <sys/time.h>
 
-typedef struct s_data t_data;
-typedef struct s_philosopher t_philosopher;
+typedef struct s_data	t_data;
 
 typedef struct s_philosopher
 {
-	t_data	*data;
-	time_t	last_meat;
 	pthread_mutex_t	meat_mutex;
-	int		right_fork;
-	int		left_fork;
-	int		total_meat;
-	int		id;
+	t_data			*data;
+	time_t			last_meat;
+	int				right_fork;
+	int				left_fork;
+	int				total_meat;
+	int				id;
 }	t_philosopher;
 
 typedef struct s_data
 {
 	pthread_mutex_t	*forks;
-	pthread_mutex_t exit_mutex;
+	pthread_mutex_t	exit_mutex;
 	pthread_mutex_t	print_mutex;
 	pthread_t		*threads;
 	pthread_t		monitor;
@@ -52,16 +51,15 @@ typedef struct s_data
 	int				exit;
 }	t_data;
 
-int	init_philosophers(char *argv[], int argc, t_data *data);
+time_t	get_time_in_ms(void);
+time_t	ms_to_microseconds(time_t ms);
 void	launch_threads(t_data *data);
-void	clean_philosophers(t_data *data);
 void	*routine(void *d);
 void	*monitoring(void *d);
 void	locked_print(t_philosopher *philo, char *msg);
 void	monitoring_print(t_data *data, char *msg);
 void	smart_sleep(t_philosopher *philo, time_t ms);
 int		check_exit(t_philosopher *philo);
-time_t	get_time_in_ms(void);
-time_t	ms_to_microseconds(time_t ms);
+int		init_philosophers(char *argv[], int argc, t_data *data);
 
 #endif

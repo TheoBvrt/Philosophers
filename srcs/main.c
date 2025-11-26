@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:05:10 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/26 18:32:33 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/27 00:09:14 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	clean_philosophers(t_data *data)
+static void	clean_philosophers(t_data *data)
 {
 	int	index;
 

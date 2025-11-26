@@ -10,7 +10,7 @@ SRCS =	./srcs/main.c \
 OBJS = ${SRCS:.c=.o}
 CC = gcc
 RM = rm -f
-CFLAGS = -Iheaders -lpthread -g
+CFLAGS = -Wall -Wextra -Werror -Iheaders -lpthread -g
 
 all : ${NAME}
 
@@ -30,3 +30,5 @@ fclean: clean
 	make fclean -C ./libft
 
 re: fclean all
+
+.PHONY:	all clean fclean re

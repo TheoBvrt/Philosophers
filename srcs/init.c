@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 16:03:23 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/26 18:46:19 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/27 00:19:36 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static int	parse_args(char *argv[], int argc, t_data *data)
 	data->max_eat = -2;
 	if (argc == 6)
 		data->max_eat = parse_number(argv[5]);
-	if (data->time_to_die == -1
-		|| data->time_to_eat == -1
+	if (data->time_to_die == -1 || data->nb_of_philos == 0
+		|| data->time_to_eat == -1 || data->max_eat== 0
 		|| data->time_to_die == -1
 		|| data->nb_of_philos == -1
 		|| data->max_eat == -1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:03:31 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/26 18:31:27 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/27 00:12:56 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,5 @@ void	*monitoring(void *d)
 		}
 		usleep(1);
 	}
+	return (NULL);
 }
