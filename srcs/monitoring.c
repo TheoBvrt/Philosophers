@@ -6,25 +6,52 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:03:31 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/26 16:13:31 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/26 18:31:27 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-time_t	get_last_meat(t_data *data, int index)
+static time_t	get_last_meat(t_data *data, int index)
 {
 	time_t	return_value;
 
 	pthread_mutex_lock(&data->philosophers[index].meat_mutex);
 	return_value = data->philosophers[index].last_meat;
 	pthread_mutex_unlock(&data->philosophers[index].meat_mutex);
-	return(return_value);
+	return (return_value);
+}
+
+static void	set_exit(t_data *data)
+{
+	pthread_mutex_lock(&data->exit_mutex);
+	data->exit = 1;
+	pthread_mutex_unlock(&data->exit_mutex);
+}
+
+static int	check_last_meal(t_data *data, int index)
+{
+	if ((get_time_in_ms() - data->start_time)
+		- get_last_meat(data, index) > data->time_to_die)
+	{
+		locked_print(&data->philosophers[index], "died");
+		set_exit(data);
+		return (1);
+	}
+	return (0);
+}
+
+static void	increment_max_eat(t_data *data, int index, int *max_eat_reached)
+{
+	pthread_mutex_lock(&data->philosophers[index].meat_mutex);
+	if (data->philosophers[index].total_meat
+		>= data->max_eat && data->max_eat != -2)
+		*max_eat_reached += 1;
+	pthread_mutex_unlock(&data->philosophers[index].meat_mutex);
 }
 
 void	*monitoring(void *d)
 {
-	int	counter = 0;
 	t_data	*data;
 	int		index;
 	int		max_eat_reached;
@@ -36,36 +63,17 @@ void	*monitoring(void *d)
 		max_eat_reached = 0;
 		while (index < data->nb_of_philos)
 		{
-			if ((get_time_in_ms() - data->start_time) - get_last_meat(data, index) > data->time_to_die)
-			{
-				pthread_mutex_lock(&data->print_mutex);
-				printf("(%ld)[%d] -> %s\n", get_time_in_ms() - data->start_time,
-					data->philosophers[index].id, "died");
-				pthread_mutex_unlock(&data->print_mutex);
-				pthread_mutex_lock(&data->exit_mutex);
-				data->exit = 1;
-				pthread_mutex_unlock(&data->exit_mutex);
+			if (check_last_meal(data, index))
 				return (NULL);
-			}
-			pthread_mutex_lock(&data->philosophers[index].meat_mutex);
-			if (data->philosophers[index].total_meat == data->max_eat)
-				max_eat_reached ++;
-			pthread_mutex_unlock(&data->philosophers[index].meat_mutex);
+			increment_max_eat(data, index, &max_eat_reached);
 			index ++;
 		}
-		if (max_eat_reached == data->nb_of_philos)
+		if (max_eat_reached >= data->nb_of_philos && data->max_eat != -2)
 		{
-			pthread_mutex_lock(&data->print_mutex);
-			printf("total max eat reached %d\n", max_eat_reached);
-			pthread_mutex_unlock(&data->print_mutex);
-			
-			pthread_mutex_lock(&data->exit_mutex);
-			data->exit = 1;
-			pthread_mutex_unlock(&data->exit_mutex);
+			monitoring_print(data, "All philosophers have enough to eat");
+			set_exit(data);
 			return (NULL);
 		}
-		counter ++;
 		usleep(1);
 	}
-
 }

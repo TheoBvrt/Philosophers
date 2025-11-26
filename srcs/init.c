@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 16:03:23 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/26 16:10:00 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/26 18:30:34 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static long	parse_number(char *str)
 {
-	int		index;
+	int	index;
 
 	index = 0;
 	while (str[index])
@@ -36,10 +36,10 @@ static int	parse_args(char *argv[], int argc, t_data *data)
 	if (argc == 6)
 		data->max_eat = parse_number(argv[5]);
 	if (data->time_to_die == -1
-			|| data->time_to_eat == -1
-			|| data->time_to_die == -1
-			|| data->nb_of_philos == -1
-			|| data->max_eat == -1)
+		|| data->time_to_eat == -1
+		|| data->time_to_die == -1
+		|| data->nb_of_philos == -1
+		|| data->max_eat == -1)
 	{
 		ft_printf("Erreur d'arguments\n");
 		return (0);
@@ -49,17 +49,26 @@ static int	parse_args(char *argv[], int argc, t_data *data)
 
 static int	setup_each_philo(t_data *data)
 {
-	int	index;
+	t_philosopher	*philo;
+	int				index;
 
 	index = 0;
 	while (index < data->nb_of_philos)
 	{
+		philo = &data->philosophers[index];
 		data->philosophers[index].data = data;
 		data->philosophers[index].id = index + 1;
 		data->philosophers[index].last_meat = 0;
 		data->philosophers[index].total_meat = 0;
 		pthread_mutex_init(&data->philosophers[index].meat_mutex, NULL);
 		pthread_mutex_init(&data->forks[index], NULL);
+		philo->right_fork = philo->id % data->nb_of_philos;
+		philo->left_fork = (philo->id - 1) % data->nb_of_philos;
+		if (!data->philosophers[index].id % 2 == 0)
+		{
+			philo->right_fork = (philo->id - 1) % data->nb_of_philos;
+			philo->left_fork = philo->id % data->nb_of_philos;
+		}
 		index ++;
 	}
 	pthread_mutex_init(&data->exit_mutex, NULL);
@@ -74,7 +83,8 @@ void	launch_threads(t_data *data)
 	index = 0;
 	while (index < data->nb_of_philos)
 	{
-		data->philosophers[index].last_meat = get_time_in_ms() - data->start_time;
+		data->philosophers[index].last_meat = get_time_in_ms()
+			- data->start_time;
 		pthread_create(&data->threads[index], NULL, routine,
 			&data->philosophers[index]);
 		index ++;

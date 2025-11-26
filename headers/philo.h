@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:56:51 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/26 16:10:01 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/26 18:18:48 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,15 @@
 # include <sys/time.h>
 
 typedef struct s_data t_data;
+typedef struct s_philosopher t_philosopher;
 
 typedef struct s_philosopher
 {
 	t_data	*data;
 	time_t	last_meat;
 	pthread_mutex_t	meat_mutex;
+	int		right_fork;
+	int		left_fork;
 	int		total_meat;
 	int		id;
 }	t_philosopher;
@@ -54,6 +57,10 @@ void	launch_threads(t_data *data);
 void	clean_philosophers(t_data *data);
 void	*routine(void *d);
 void	*monitoring(void *d);
+void	locked_print(t_philosopher *philo, char *msg);
+void	monitoring_print(t_data *data, char *msg);
+void	smart_sleep(t_philosopher *philo, time_t ms);
+int		check_exit(t_philosopher *philo);
 time_t	get_time_in_ms(void);
 time_t	ms_to_microseconds(time_t ms);
 
