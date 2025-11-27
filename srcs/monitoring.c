@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:03:31 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 00:23:27 by theo             ###   ########.fr       */
+/*   Updated: 2025/11/27 12:09:25 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ static int	check_last_meal(t_data *data, int index)
 	if ((get_time_in_ms() - data->start_time)
 		- get_last_meat(data, index) > data->time_to_die)
 	{
-		locked_print(&data->philosophers[index], "died");
+		pthread_mutex_lock(&data->print_mutex);
+		printf("(%ld)[%d] -> %s\n", get_time_in_ms() - data->start_time,
+			data->philosophers[index].id, "died");
+		pthread_mutex_unlock(&data->print_mutex);
 		set_exit(data);
 		return (1);
 	}
