@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:03:31 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 14:17:56 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/27 14:21:03 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	check_last_meal(t_data *data, int index)
 		set_exit(data);
 		usleep(2000);
 		pthread_mutex_lock(&data->print_mutex);
-		printf("(%ld)[%d] -> %s\n", get_time_in_ms() - data->start_time,
+		printf("%ld %d %s\n", get_time_in_ms() - data->start_time,
 			data->philosophers[index].id, "died");
 		pthread_mutex_unlock(&data->print_mutex);
 		return (1);

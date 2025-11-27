@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 17:22:20 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 13:45:32 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/27 14:21:18 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	locked_print(t_philosopher *philo, char *msg)
 	}
 	pthread_mutex_unlock(&philo->data->exit_mutex);
 	pthread_mutex_lock(&philo->data->print_mutex);
-	printf("(%ld)[%d] -> %s\n", get_time_in_ms() - philo->data->start_time,
+	printf("%ld %d %s\n", get_time_in_ms() - philo->data->start_time,
 		philo->id, msg);
 	pthread_mutex_unlock(&philo->data->print_mutex);
 }
