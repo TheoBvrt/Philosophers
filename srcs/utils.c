@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 17:22:20 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 12:10:44 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/27 13:45:32 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	locked_print(t_philosopher *philo, char *msg)
 
 void	monitoring_print(t_data *data, char *msg)
 {
+	usleep(2000);
 	pthread_mutex_lock(&data->print_mutex);
 	printf("%s\n", msg);
 	pthread_mutex_unlock(&data->print_mutex);

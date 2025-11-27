@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:03:31 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 12:09:25 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/27 13:42:03 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ static int	check_last_meal(t_data *data, int index)
 	if ((get_time_in_ms() - data->start_time)
 		- get_last_meat(data, index) > data->time_to_die)
 	{
+		set_exit(data);
+		usleep(2000);
 		pthread_mutex_lock(&data->print_mutex);
 		printf("(%ld)[%d] -> %s\n", get_time_in_ms() - data->start_time,
 			data->philosophers[index].id, "died");
 		pthread_mutex_unlock(&data->print_mutex);
-		set_exit(data);
 		return (1);
 	}
 	return (0);
@@ -73,8 +74,8 @@ void	*monitoring(void *d)
 		}
 		if (max_eat_reached >= data->nb_of_philos && data->minimum_eat != -2)
 		{
-			monitoring_print(data, "All philosophers have enough to eat");
 			set_exit(data);
+			monitoring_print(data, "All philosophers have enough to eat");
 			return (NULL);
 		}
 		usleep(1);

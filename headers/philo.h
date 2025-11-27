@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:56:51 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 00:29:32 by theo             ###   ########.fr       */
+/*   Updated: 2025/11/27 13:10:42 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ typedef struct s_philosopher
 	pthread_mutex_t	meat_mutex;
 	t_data			*data;
 	time_t			last_meat;
-	int				right_fork;
-	int				left_fork;
+	int				first_fork;
+	int				last_fork;
 	int				total_meat;
 	int				id;
 }	t_philosopher;

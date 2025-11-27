@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 16:03:23 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 00:36:04 by theo             ###   ########.fr       */
+/*   Updated: 2025/11/27 14:11:51 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	parse_args(char *argv[], int argc, t_data *data)
 		data->minimum_eat = parse_number(argv[5]);
 	if (data->time_to_die == -1 || data->nb_of_philos == 0
 		|| data->time_to_eat == -1 || data->minimum_eat == 0
-		|| data->time_to_die == -1
+		|| data->time_to_sleep == -1
 		|| data->nb_of_philos == -1
 		|| data->minimum_eat == -1)
 	{
@@ -62,12 +62,12 @@ static int	setup_each_philo(t_data *data)
 		data->philosophers[index].total_meat = 0;
 		pthread_mutex_init(&data->philosophers[index].meat_mutex, NULL);
 		pthread_mutex_init(&data->forks[index], NULL);
-		philo->right_fork = philo->id % data->nb_of_philos;
-		philo->left_fork = (philo->id - 1) % data->nb_of_philos;
+		philo->first_fork = philo->id % data->nb_of_philos;
+		philo->last_fork = (philo->id - 1) % data->nb_of_philos;
 		if (!data->philosophers[index].id % 2 == 0)
 		{
-			philo->right_fork = (philo->id - 1) % data->nb_of_philos;
-			philo->left_fork = philo->id % data->nb_of_philos;
+			philo->first_fork = (philo->id - 1) % data->nb_of_philos;
+			philo->last_fork = philo->id % data->nb_of_philos;
 		}
 		index ++;
 	}
@@ -98,8 +98,11 @@ void	launch_threads(t_data *data)
 	data->start = 1;
 	pthread_create(&data->monitor, NULL, monitoring, data);
 	pthread_join(data->monitor, NULL);
-	while (index < data->nb_of_philos)
-		pthread_join(data->threads[index ++], NULL);
+	if (data->nb_of_philos != 1)
+	{
+		while (index < data->nb_of_philos)
+			pthread_join(data->threads[index ++], NULL);
+	}
 }
 
 int	init_philosophers(char *argv[], int argc, t_data *data)
