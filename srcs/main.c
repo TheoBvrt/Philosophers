@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:05:10 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 00:30:18 by theo             ###   ########.fr       */
+/*   Updated: 2025/11/27 14:26:59 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int argc, char *argv[])
 
 	if (argc != 5 && argc != 6)
 	{
-		ft_printf("Usage : ./philo nb_of_philos t_to_die t_to_eat "
+		printf("Usage : ./philo nb_of_philos t_to_die t_to_eat "
 			"t_to_sleep max_eat(optional)\n");
 		return (1);
 	}

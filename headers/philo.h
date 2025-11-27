@@ -6,18 +6,18 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:56:51 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 13:10:42 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/27 14:29:47 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "../libft/libft.h"
 # include "stdio.h"
 # include "unistd.h"
 # include "pthread.h"
 # include "limits.h"
+# include <stdlib.h>
 # include <sys/time.h>
 
 typedef struct s_data	t_data;
@@ -60,6 +60,7 @@ void	locked_print(t_philosopher *philo, char *msg);
 void	monitoring_print(t_data *data, char *msg);
 void	smart_sleep(t_philosopher *philo, time_t ms);
 void	single_philo(t_philosopher	*philo);
+long	ft_atol(const char *nbr);
 int		check_exit(t_philosopher *philo);
 int		init_philosophers(char *argv[], int argc, t_data *data);
 

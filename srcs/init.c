@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 16:03:23 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 14:11:51 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/27 14:29:36 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ static long	parse_number(char *str)
 	index = 0;
 	while (str[index])
 	{
-		if (!ft_isdigit(str[index]))
+		if (!(str[index] >= '0' && str[index] <= '9'))
 			return (-1);
 		index ++;
 	}
-	return (ft_atoi(str));
+	return (ft_atol(str));
 }
 
 static int	parse_args(char *argv[], int argc, t_data *data)
@@ -41,7 +41,7 @@ static int	parse_args(char *argv[], int argc, t_data *data)
 		|| data->nb_of_philos == -1
 		|| data->minimum_eat == -1)
 	{
-		ft_printf("Erreur d'arguments\n");
+		printf("Erreur d'arguments\n");
 		return (0);
 	}
 	return (1);

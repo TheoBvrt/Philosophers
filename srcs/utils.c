@@ -6,7 +6,7 @@
 /*   By: thbouver <thbouver@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 17:22:20 by thbouver          #+#    #+#             */
-/*   Updated: 2025/11/27 14:21:18 by thbouver         ###   ########.fr       */
+/*   Updated: 2025/11/27 14:28:00 by thbouver         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,28 @@ void	smart_sleep(t_philosopher *philo, time_t ms)
 			break ;
 		usleep(100);
 	}
+}
+
+long	ft_atol(const char *nbr)
+{
+	long	index;
+	long	result;
+	long	negative;
+
+	index = 0;
+	result = 0;
+	negative = 0;
+	while ((nbr[index] >= 9 && nbr[index] <= 13) || nbr[index] == 32)
+		index++;
+	if (nbr[index] == '-' || nbr[index] == '+')
+	{
+		if (nbr[index] == '-')
+			negative = 1;
+		index ++;
+	}
+	while ((nbr[index] >= '0' && nbr[index] <= '9'))
+		result = result * 10 + (nbr[index ++] - 48);
+	if (negative)
+		result *= -1;
+	return (result);
 }
